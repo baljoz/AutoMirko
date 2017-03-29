@@ -47,5 +47,4 @@ class Car {
     var telefon: String = "" // telefon vlasnika vozila
     var slika: String = "" //url slike koja se prikaze na pocetnom ekranu
     var josSlike = [String]() // url slika koje se prikazuju kada se udje u detalje 
-    
 }
