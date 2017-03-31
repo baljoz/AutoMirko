@@ -11,6 +11,7 @@ import UIKit
 class CollectionViewCell: UICollectionViewCell {
     
     
+    @IBOutlet weak var naziv: UILabel!
     @IBOutlet weak var slika: UIImageView!
     
     

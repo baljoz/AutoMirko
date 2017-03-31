@@ -10,6 +10,7 @@ import UIKit
 
 class CarTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var cena: UILabel!
     @IBOutlet weak var ime: UILabel!
     @IBOutlet weak var slika: UIImageView!
     override func awakeFromNib() {

@@ -35,14 +35,19 @@ class SliderViewController: UIViewController,UITableViewDelegate,UITableViewData
             }
         else {
             for p in sing.car {
-                plac.append(p)}
+                
+                plac.append(p)
+                showAnimate.append(false)
+            }
             for p in sing.slikeKola{
                 slika.append(p)
+
             }
         }
         
     
     }
+    var showAnimate = [Bool]()
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -56,7 +61,7 @@ class SliderViewController: UIViewController,UITableViewDelegate,UITableViewData
         let cell = table.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CarTableViewCell
         
         cell.ime.text!=sing.car[indexPath.row].marka
-        
+        cell.cena.text! = sing.car[indexPath.row].Cena
         cell.ime.text?.append(sing.car[indexPath.row].model)
       cell.slika.image=sing.slikeKola[indexPath.row]
 
@@ -76,6 +81,23 @@ class SliderViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.present(newFrontController, animated: false, completion: nil)
         
     }
+    
+    ///ANITAMTE TABLE
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        //cell.alpha = 0
+        if showAnimate[indexPath.row] == false {
+        let rotateTransform = CATransform3DTranslate(CATransform3DIdentity , -500, 10, 0)
+        cell.layer.transform = rotateTransform
+        UIView.animate(withDuration: 0.5,  animations: {() -> Void in
+         
+            //cell.alpha=1
+            cell.layer.transform = CATransform3DIdentity
+        })
+        }
+        showAnimate[indexPath.row]=true
+    }
+    
     
   /*  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -114,11 +136,13 @@ class SliderViewController: UIViewController,UITableViewDelegate,UITableViewData
                             car.model = hh["model_name"] as! String
                             car.postavljeno = hh["updated_at"] as!String
                             car.slika = hh["image"] as! String
-                           
+                            car.godiste=hh["year"] as! String
+                            car.Cena = hh["price"] as! String
                             
                             
                             car.id=hh["id"] as! Int
                             self.sing.car.append(car)
+                            self.showAnimate.append(false)
                             self.plac.append(car)
                         }
                         

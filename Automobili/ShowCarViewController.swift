@@ -10,6 +10,11 @@ import UIKit
 
 class ShowCarViewController: UIViewController,UIScrollViewDelegate {
 
+    @IBOutlet weak var cena: UILabel!
+    @IBOutlet weak var model: UILabel!
+    @IBOutlet weak var izmenjeno: UILabel!
+    @IBOutlet weak var godiste: UILabel!
+    @IBOutlet weak var marka: UILabel!
     @IBOutlet weak var boja: UILabel!
     @IBOutlet weak var registrovano: UILabel!
     @IBOutlet weak var vrata: UILabel!
@@ -19,6 +24,7 @@ class ShowCarViewController: UIViewController,UIScrollViewDelegate {
     @IBOutlet weak var info: UILabel!
     @IBOutlet weak var scroll: UIScrollView!
     @IBOutlet weak var slika: UIImageView!
+    var neucitano = true
     var slikee = [UIImage]()
     var urll = [String]()
     var brSlike : Int = 0
@@ -28,20 +34,25 @@ class ShowCarViewController: UIViewController,UIScrollViewDelegate {
     @IBOutlet weak var slika1: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        text.text=car.model;
+      //  text.text=car.model;
         slika.image=sl
         slika1.image=sl
          UIView.animate(withDuration: 0.5, animations: {
             self.slika1.transform = CGAffineTransform(rotationAngle: (180.0 * CGFloat(M_PI)) / 180.0) } )
         
-        scroll.contentSize.height=1000
-        ucitaj ()
+      // scroll.contentSize.height=500
+      //  ucitaj ()
         
-        prikaziText()
+     prikaziText()
+        prikaziDetalje()
     }
     func  prikaziText() -> Void {
         
-        text.text = "Proizvodjac: "+car.marka + "\n\n Model : "+car.model + "\n\nCena :"+car.Cena + "\n\n Godina proizvodnje :"+car.godiste + "\n\nPosledji put izmenjeno :"+car.postavljeno
+        marka.text=car.marka
+        model.text=car.model
+        godiste.text=car.godiste
+        cena.text=car.Cena
+        izmenjeno.text=car.postavljeno
     }
     @IBOutlet weak var text: UITextView!
     
@@ -143,6 +154,9 @@ class ShowCarViewController: UIViewController,UIScrollViewDelegate {
                     }
         if urll.count > 0 {
         ucitano=true
+            scroll.contentSize.height=1000
+            neucitano=false
+           // scroll.contentSize.height=1000
         }
         
     }
@@ -182,7 +196,7 @@ class ShowCarViewController: UIViewController,UIScrollViewDelegate {
         self.slika.image=sing.slikeKola[index]
         slika1.image=sing.slikeKola[index]
         car=sing.car[index]
-            prikaziText()
+           prikaziText()
         }
         else {
             index = 0
@@ -191,7 +205,9 @@ class ShowCarViewController: UIViewController,UIScrollViewDelegate {
             car=sing.car[index]
             prikaziText()
         }
-        prikaziDetalje()
+      //  prikaziDetalje()
+        neucitano=true
+        scroll.contentSize.height=500
     }
     
     
@@ -231,7 +247,9 @@ class ShowCarViewController: UIViewController,UIScrollViewDelegate {
             car=sing.car[index]
             prikaziText()
         }
-      prikaziDetalje()
+        neucitano = true
+          scroll.contentSize.height=500
+      //prikaziDetalje()
         
     }
    func prikaziDetalje() -> Void
@@ -242,12 +260,17 @@ class ShowCarViewController: UIViewController,UIScrollViewDelegate {
     vrata.text!=car.vrata
     registrovano.text=car.registracija
     boja.text!=car.boja
-    
+   
     
     }
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        
-        
+
+   
+   
+    @IBAction func up(_ sender: UISwipeGestureRecognizer) {
+        if(neucitano){
+          scroll.contentSize.height=650
+            prikaziDetalje()}
+      
     }
 
         /*

@@ -31,6 +31,7 @@ class GumeViewController: UIViewController,UICollectionViewDelegate,UICollection
         }
         else {
             for p in sing.gume {
+                showAnimate.append(false)
                 plac.append(p)}
             for p in sing.slikeGuma{
                 slika.append(p)
@@ -40,6 +41,7 @@ class GumeViewController: UIViewController,UICollectionViewDelegate,UICollection
 
         //}
     }
+    var showAnimate = [Bool]()
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -54,11 +56,25 @@ class GumeViewController: UIViewController,UICollectionViewDelegate,UICollection
         
         let cell = kol.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
         cell.slika.image=sing.slikeGuma[indexPath.row]
-        
+        cell.naziv.text = sing.gume[indexPath.row].type
         
         return cell
 
     }
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        //cell.alpha = 0
+        if showAnimate[indexPath.row] == false {
+            let rotateTransform = CATransform3DTranslate(CATransform3DIdentity , -500, 10, 0)
+            cell.layer.transform = rotateTransform
+            UIView.animate(withDuration: 0.5,  animations: {() -> Void in
+                
+                //cell.alpha=1
+                cell.layer.transform = CATransform3DIdentity
+            })
+               showAnimate[indexPath.row]=true
+    }
+}
 
     /*
     // MARK: - Navigation
@@ -85,7 +101,7 @@ class GumeViewController: UIViewController,UICollectionViewDelegate,UICollection
                         
                         let myJson = try JSONSerialization.jsonObject(with: content) as! [String: AnyObject]
                         self.max=myJson["total"] as! Int
-                    
+                        self.sing.maxGume=self.max
                         
                         print(myJson)
                         let p = myJson["tires"] as? [[String: AnyObject]]
@@ -111,6 +127,7 @@ class GumeViewController: UIViewController,UICollectionViewDelegate,UICollection
                             car.uploadAt = hh["updated_at"] as! String
                             car.image = hh["image"] as! String
                            
+                            self.showAnimate.append(false)
                             self.sing.gume.append(car)
                         }
                         
@@ -137,8 +154,9 @@ class GumeViewController: UIViewController,UICollectionViewDelegate,UICollection
             let dst = NSData(contentsOf: str as! URL)!
             slika.append(UIImage(data: dst as Data)!)
             sing.slikeGuma.append(slika[i])
+            
         }
-        
+         self.kol.reloadData()
         
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView){
@@ -156,6 +174,7 @@ class GumeViewController: UIViewController,UICollectionViewDelegate,UICollection
             ucitaj()
         }
         }
+     
     }
     
 
